@@ -1,100 +1,67 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
-interface ShowcaseItem {
+export interface ShowcaseItem {
   id: string;
   title: string;
   author: string;
   imageUrl: string;
   category: "inspiration" | "showcase";
+  prompt: string;
+  type: "image" | "video";
+  height: number;
+  response?: string;
 }
 
-// Placeholder showcase data - you can replace these with your own examples
-const DEFAULT_SHOWCASE: ShowcaseItem[] = [
-  {
-    id: "1",
-    title: "Minimalist Logo Design",
-    author: "AI Generated",
-    imageUrl: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&h=400&fit=crop",
-    category: "showcase",
-  },
-  {
-    id: "2",
-    title: "Product Poster",
-    author: "AI Generated",
-    imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=400&fit=crop",
-    category: "showcase",
-  },
-  {
-    id: "3",
-    title: "Brand Identity Kit",
-    author: "AI Generated",
-    imageUrl: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop",
-    category: "showcase",
-  },
-  {
-    id: "4",
-    title: "Social Media Template",
-    author: "AI Generated",
-    imageUrl: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=400&fit=crop",
-    category: "showcase",
-  },
-  {
-    id: "5",
-    title: "Nature Photography",
-    author: "Unsplash",
-    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=400&fit=crop",
-    category: "inspiration",
-  },
-  {
-    id: "6",
-    title: "Architecture Render",
-    author: "Unsplash",
-    imageUrl: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&h=400&fit=crop",
-    category: "inspiration",
-  },
-  {
-    id: "7",
-    title: "Abstract Art",
-    author: "Unsplash",
-    imageUrl: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=600&h=400&fit=crop",
-    category: "inspiration",
-  },
-  {
-    id: "8",
-    title: "Interior Design",
-    author: "Unsplash",
-    imageUrl: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&h=400&fit=crop",
-    category: "inspiration",
-  },
+// Picsum Photos — free beautiful images, accessible in China
+const img = (id: string) => `/showcase/${id}.png`;
+
+const SHOWCASE_ITEMS: ShowcaseItem[] = [
+  { id:"1", title:"Artisan Coffee Brand Logo", author:"Minmo", imageUrl:img("1"), category:"showcase", type:"image", prompt:"Design a brand logo for an artisan coffee roaster.", height:500 },
+  { id:"2", title:"Jazz Night Event Poster", author:"Minmo", imageUrl:img("2"), category:"showcase", type:"image", prompt:"Design an event poster for a late-night jazz show.", height:320 },
+  { id:"3", title:"Meditation App Home Screen", author:"Minmo", imageUrl:img("3"), category:"showcase", type:"image", prompt:"Design a mobile app home screen for a meditation app.", height:560 },
+  { id:"4", title:"Risograph Photo Remix", author:"Minmo", imageUrl:img("4"), category:"showcase", type:"image", prompt:"Remix a photo into a bold risograph poster.", height:380 },
+  { id:"5", title:"Fashion Brand Moodboard", author:"Minmo", imageUrl:img("5"), category:"showcase", type:"image", prompt:"Create a moodboard for a sustainable fashion brand.", height:450 },
+  { id:"6", title:"Abstract Geometric Poster", author:"Minmo", imageUrl:img("6"), category:"showcase", type:"image", prompt:"Design an abstract geometric poster.", height:350 },
+  { id:"7", title:"Sculptural Ceramic Vase", author:"Minmo", imageUrl:img("7"), category:"showcase", type:"image", prompt:"A sculptural ceramic vase with organic curves.", height:520 },
+  { id:"8", title:"Neon Typography Sign", author:"Minmo", imageUrl:img("8"), category:"showcase", type:"image", prompt:"A neon typography sign for a bar.", height:340 },
+  { id:"9", title:"Matcha Packaging Design", author:"Minmo", imageUrl:img("9"), category:"showcase", type:"image", prompt:"Minimalist matcha tea packaging.", height:480 },
+  { id:"10", title:"Vintage Travel Poster", author:"Minmo", imageUrl:img("10"), category:"showcase", type:"image", prompt:"A vintage travel poster for Santorini.", height:410 },
+  { id:"11", title:"Minimalist Interior Render", author:"Minmo", imageUrl:img("11"), category:"inspiration", type:"image", prompt:"Render a minimalist Japanese interior.", height:470 },
+  { id:"12", title:"Sunset Mountain Landscape", author:"Minmo", imageUrl:img("12"), category:"inspiration", type:"image", prompt:"Dramatic sunset over mountain peaks.", height:330 },
+  { id:"13", title:"Modern Brutalist Architecture", author:"Minmo", imageUrl:img("13"), category:"inspiration", type:"image", prompt:"Modern concrete architecture.", height:500 },
+  { id:"14", title:"Fluid Abstract Art", author:"Minmo", imageUrl:img("14"), category:"inspiration", type:"image", prompt:"Fluid abstract art with pink and blue.", height:360 },
+  { id:"15", title:"Clean Product Photography", author:"Minmo", imageUrl:img("15"), category:"inspiration", type:"image", prompt:"Clean product photo on white.", height:420 },
+  { id:"16", title:"Botanical Watercolor", author:"Minmo", imageUrl:img("16"), category:"inspiration", type:"image", prompt:"Delicate watercolor botanical.", height:510 },
+  { id:"17", title:"Pastry Shop Branding", author:"Minmo", imageUrl:img("17"), category:"showcase", type:"image", prompt:"Branding kit for a French pastry shop.", height:370 },
+  { id:"18", title:"Dark Mode Dashboard", author:"Minmo", imageUrl:img("18"), category:"showcase", type:"image", prompt:"Dark mode analytics dashboard UI.", height:460 },
+  { id:"19", title:"Street Fashion Editorial", author:"Minmo", imageUrl:img("19"), category:"inspiration", type:"image", prompt:"Street fashion editorial shoot.", height:530 },
+  { id:"20", title:"Ceramic Tableware Set", author:"Minmo", imageUrl:img("20"), category:"inspiration", type:"image", prompt:"Handcrafted ceramic tableware.", height:390 },
 ];
 
 type Tab = "inspiration" | "showcase";
 
 export default function ShowcasePanel() {
   const [activeTab, setActiveTab] = useState<Tab>("showcase");
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredItems = DEFAULT_SHOWCASE.filter(
-    (item) =>
-      item.category === activeTab &&
-      (searchQuery === "" ||
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredItems = SHOWCASE_ITEMS.filter((item) => item.category === activeTab);
 
   return (
     <div className="flex flex-col h-full bg-[#faf8f5]">
-      {/* Header with Tabs */}
-      <div className="px-6 pt-6 pb-2">
+      {/* Header: Discovery + Tabs */}
+      <div className="px-6 pt-6 pb-2 flex items-center gap-4">
+        <span className="text-sm font-semibold text-[#1a1a1a] flex-shrink-0">Discovery</span>
         <div className="flex items-center gap-1 bg-[#eae5dc] rounded-full p-1">
           <button
             onClick={() => setActiveTab("showcase")}
             className={`flex-1 text-sm font-medium py-2 px-4 rounded-full transition-all cursor-pointer ${
               activeTab === "showcase"
-                ? "bg-white text-[#1a1a1a] shadow-sm"
+                ? "bg-white shadow-sm"
                 : "text-[#6b6b6b] hover:text-[#1a1a1a]"
             }`}
+            style={activeTab === "showcase" ? { color: "#10B981" } : undefined}
           >
             Showcase
           </button>
@@ -102,70 +69,39 @@ export default function ShowcasePanel() {
             onClick={() => setActiveTab("inspiration")}
             className={`flex-1 text-sm font-medium py-2 px-4 rounded-full transition-all cursor-pointer ${
               activeTab === "inspiration"
-                ? "bg-white text-[#1a1a1a] shadow-sm"
+                ? "bg-white shadow-sm"
                 : "text-[#6b6b6b] hover:text-[#1a1a1a]"
             }`}
+            style={activeTab === "inspiration" ? { color: "#10B981" } : undefined}
           >
             Inspiration
           </button>
         </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="px-6 pb-4">
-        <div className="relative">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b6b6b]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white border border-[#e5e0d8] rounded-xl py-2.5 pl-10 pr-4 text-sm text-[#1a1a1a] placeholder-[#6b6b6b] outline-none focus:border-[#1a1a1a] transition-colors"
-          />
-        </div>
-      </div>
-
-      {/* Grid */}
-      <div className="flex-1 overflow-y-auto px-6 pb-6">
-        {filteredItems.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-40 text-[#6b6b6b]">
-            <p className="text-sm">No results found</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-3">
-            {filteredItems.map((item) => (
-              <div
-                key={item.id}
-                className="group cursor-pointer"
-              >
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-[#e5e0d8] mb-2">
-                  <img
-                    src={item.imageUrl}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="text-sm font-medium text-[#1a1a1a] truncate">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-[#6b6b6b]">{item.author}</p>
+      {/* Masonry Grid - 4 columns */}
+      <div className="flex-1 overflow-y-auto px-6 pt-4 pb-6">
+        <div className="columns-4 gap-3 space-y-3">
+          {filteredItems.map((item) => (
+            <Link key={item.id} href={`/showcase/${item.id}`} className="block break-inside-avoid group cursor-pointer">
+              <div className="relative rounded-xl overflow-hidden bg-[#e5e0d8] mb-2">
+                <img
+                  src={item.imageUrl} alt={item.title}
+                  className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy" style={{ aspectRatio: `400/${item.height}` }}
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
               </div>
-            ))}
-          </div>
-        )}
+              <h3 className="text-[13px] font-medium text-[#1a1a1a] truncate leading-tight">{item.title}</h3>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <div className="w-4 h-4 rounded-full bg-[#10B981] flex items-center justify-center flex-shrink-0">
+                  <span className="text-white text-[9px] font-bold">M</span>
+                </div>
+                <p className="text-[11px] text-[#6b6b6b]">{item.author}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

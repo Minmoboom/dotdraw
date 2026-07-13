@@ -57,16 +57,19 @@ export default function AuthForm({ mode }: AuthFormProps) {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-sm font-bold">D</span>
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm"
+            style={{ backgroundColor: "#10B981" }}
+          >
+            <span className="text-white text-2xl font-bold italic tracking-tight">D</span>
           </div>
-          <h1 className="text-2xl font-semibold text-[#1a1a1a]">
-            {mode === "login" ? "Welcome back" : "Create your account"}
+          <h1 className="text-2xl font-bold text-[#1a1a1a] mb-1 tracking-tight">
+            DotDraw, your design agent
           </h1>
           <p className="text-sm text-[#6b6b6b] mt-2">
             {mode === "login"
               ? "Sign in to your DotDraw account"
-              : "Start creating with AI"}
+              : "Create anything you can describe"}
           </p>
         </div>
 
@@ -85,7 +88,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="you@example.com"
-              className="w-full bg-[#faf8f5] border border-[#e5e0d8] rounded-xl px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-[#6b6b6b] outline-none focus:border-[#1a1a1a] transition-colors"
+              className="w-full bg-[#faf8f5] border border-[#e5e0d8] rounded-xl px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-[#6b6b6b] outline-none focus:border-[#10B981] transition-colors"
             />
           </div>
 
@@ -100,7 +103,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               required
               minLength={6}
               placeholder="At least 6 characters"
-              className="w-full bg-[#faf8f5] border border-[#e5e0d8] rounded-xl px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-[#6b6b6b] outline-none focus:border-[#1a1a1a] transition-colors"
+              className="w-full bg-[#faf8f5] border border-[#e5e0d8] rounded-xl px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-[#6b6b6b] outline-none focus:border-[#10B981] transition-colors"
             />
           </div>
 
@@ -120,7 +123,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#1a1a1a] text-white text-sm font-medium py-2.5 rounded-full hover:bg-[#333] transition-colors disabled:opacity-50 cursor-pointer"
+            className="w-full text-white text-sm font-medium py-2.5 rounded-full transition-colors disabled:opacity-50 cursor-pointer"
+            style={{ backgroundColor: "#10B981" }}
           >
             {loading
               ? "Working..."
@@ -136,7 +140,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 Don&apos;t have an account?{" "}
                 <a
                   href="/signup"
-                  className="text-[#1a1a1a] font-medium hover:underline"
+                  className="text-[#10B981] font-medium hover:underline"
                 >
                   Sign Up
                 </a>
@@ -146,7 +150,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 Already have an account?{" "}
                 <a
                   href="/login"
-                  className="text-[#1a1a1a] font-medium hover:underline"
+                  className="text-[#10B981] font-medium hover:underline"
                 >
                   Sign In
                 </a>
