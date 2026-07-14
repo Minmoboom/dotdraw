@@ -198,6 +198,9 @@ async function generateImage(args: any): Promise<ToolResult> {
     : prompt;
 
   try {
+    console.log("[GLM-Image] Prompt:", enhancedPrompt);
+    console.log("[GLM-Image] Size:", normalizedSize, "N:", n);
+
     const response = await fetch(
       "https://open.bigmodel.cn/api/paas/v4/images/generations",
       {
@@ -217,8 +220,11 @@ async function generateImage(args: any): Promise<ToolResult> {
     );
 
     const data = await response.json();
+    console.log("[GLM-Image] Response status:", response.status);
+    console.log("[GLM-Image] Image URLs:", (data.data || []).map((d: any) => d.url?.slice(0, 80)).join(", "));
 
     if (!response.ok) {
+      console.error("[GLM-Image] Error:", JSON.stringify(data).slice(0, 300));
       throw new Error(data.error?.message || `GLM-Image API error: ${response.status}`);
     }
 
@@ -226,6 +232,7 @@ async function generateImage(args: any): Promise<ToolResult> {
     const images = (data.data || []).map((d: any) => d.url || d.b64_json).filter(Boolean);
 
     if (images.length === 0) {
+      console.error("[GLM-Image] No images in response");
       throw new Error("GLM-Image returned no images");
     }
 
@@ -236,6 +243,7 @@ async function generateImage(args: any): Promise<ToolResult> {
       data: { images, prompt },
     };
   } catch (error: any) {
+    console.error("[GLM-Image] Exception:", error.message);
     return {
       success: false,
       error: error.message,
